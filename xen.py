@@ -4,6 +4,10 @@ import logging, sys
 import XenAPI
 from sets import Set
 import time
+import sys
+sys.append("/usr/bin/pydevd")
+import pydevd;
+pydevd.settrace("165.91.48.43", port=5678)
 
 sys.path.insert(0, './bean/')
 sys.path.insert(0, './utils/')
