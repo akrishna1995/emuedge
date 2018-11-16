@@ -2,7 +2,7 @@
 
 import sys
 import os
-import xen
+from .. import xen
 def main():
    print "Hello World"
    xnet=xen.test_topo(topo='exps/twoway_simple.topo', start=True, nolog=False)

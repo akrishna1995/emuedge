@@ -5,23 +5,23 @@ import XenAPI
 from sets import Set
 import time
 
-sys.path.insert(0, './bean/')
-sys.path.insert(0, './utils/')
+#sys.path.insert(0, './bean/')
+#sys.path.insert(0, './utils/')
 
-from vm import vm
-from dev import dev
-from topo import topo
-import helper
-from helper import autolog as log
-from xswitch import xrouter
-from node import node_type as ntype
+from bean.vm import vm
+from bean.dev import dev
+from utils.topo import topo
+import utils.helper
+from utils.helper import autolog as log
+from bean.xswitch import xrouter
+from bean.node import node_type as ntype
 #from link import switch2node
-from router import prouter
-from xswitch import xswitch
+from bean.router import prouter
+from bean.xswitch import xswitch
 #from link import prouter2switch
-from link import veth_link
-from link import if_link
-from netif import ifb
+from bean.link import veth_link
+from bean.link import if_link
+from bean.netif import ifb
 
 class delay_dist:
 	def __init__(self, mu, sigma, rho=None):
