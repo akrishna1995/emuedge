@@ -10,7 +10,7 @@ from node import node_type
 from ..utils.helper import autolog as log
 from .. import utils
 from ..utils.helper import info_exe
-from ..utils.netif import veth
+from netif import veth
 from link import veth_link
 from link import if_link
 
