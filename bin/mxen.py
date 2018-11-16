@@ -11,7 +11,7 @@ import time
 from bean.vm import vm
 from bean.dev import dev
 from utils.topo import topo
-import utils.helper
+import utils.helper as helper
 from utils.helper import autolog as log
 from bean.xswitch import xrouter
 from bean.node import node_type as ntype
@@ -415,7 +415,7 @@ def test_connect():
 	xnet.connect(test2, br1)
 	return xnet
 
-def test_topo(topo, dist_db="trace/dist_db", start=True, nolog=False):
+def test_topo(topo, dist_db=os.path.join(os.path.dirname(os.path.abspath(__file__)), "trace/dist_db"), start=True, nolog=False):
 	# simple logging
 	#FORMAT = "[%(levelname)s - %(filename)s:%(lineno)s - %(funcName)s() ] %(message)s"
 	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
@@ -425,7 +425,8 @@ def test_topo(topo, dist_db="trace/dist_db", start=True, nolog=False):
 	tlst=['tandroid', 'tcentos', 'centos-new']
 	xnet=xen_net("root", "789456123", tlst, dist_db=dist_db)
 	# creating test nodes
-	xnet.init_topo('topo/' + topo)
+	path_to_topo=os.path.join(os.path.dirname(os.path.abspath(__file__)), "topo",topo)
+	xnet.init_topo(path_to_topo)
 	if start:
 		xnet.start_all()
 	return xnet
