@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 import XenAPI, logging, sys, time
 
-sys.path.insert(0, '../utils')
-sys.path.insert(0, './')
+#sys.path.insert(0, '../utils')
+#sys.path.insert(0, './')
 
 from dev import dev
 from node import node_type
-from helper import autolog as log
-from helper import mb2byte
+from ..utils.helper import autolog as log
+from ..utils.helper import mb2byte
 from netif import xen_vif as xvif
-from helper import info_exe
+from ..utils.helper import info_exe
 
 # ATTENTION: all memory are in MB
 class vm(dev):

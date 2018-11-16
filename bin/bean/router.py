@@ -1,12 +1,12 @@
 import XenAPI, logging, sys, subprocess
 from abc import ABCMeta, abstractmethod
 
-sys.path.insert(0, './')
+#sys.path.insert(0, './')
 
 from node import node
 from node import node_type
-from helper import autolog as log
-from helper import info_exe
+from ..utils.helper import autolog as log
+from ..utils.helper import info_exe
 from netif import router_if as rif
 from netif import netns
 

@@ -1,15 +1,15 @@
 from abc import ABCMeta, abstractmethod
 import sys
 
-sys.path.insert(0, '../utils')
-sys.path.insert(0, './')
+#sys.path.insert(0, '../utils')
+#sys.path.insert(0, './')
 
 import logging
-from helper import autolog as log
+from ..utils.helper import autolog as log
 from node import node_type as ntype
 from netif import ifb
-from helper import info_exe
-from helper import run_in_netns
+from ..utils.helper import info_exe
+from ..utils.helper import run_in_netns
 import copy
 
 # TODO

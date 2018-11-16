@@ -1,12 +1,12 @@
 from abc import ABCMeta, abstractmethod
 import sys, logging
 
-sys.path.insert(0, '../utils')
+#sys.path.insert(0, '../utils')
 
-from helper import info_exe
-from helper import run_in_netns
-from helper import autolog as log
-from ipaddr import ipv4
+from ..utils.helper import info_exe
+from ..utils.helper import run_in_netns
+from ..utils.helper import autolog as log
+from ..utils.ipaddr import ipv4
 import copy
 
 # network interface abstraction

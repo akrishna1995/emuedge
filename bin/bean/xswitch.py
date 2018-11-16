@@ -2,15 +2,15 @@
 import XenAPI, logging, sys, subprocess
 from sets import Set
 
-sys.path.insert(0, '../utils')
-sys.path.insert(0, './')
+#sys.path.insert(0, '../utils')
+#sys.path.insert(0, './')
 
 from node import node
 from node import node_type
-from helper import autolog as log
-import helper
-from helper import info_exe
-from netif import veth
+from ..utils.helper import autolog as log
+from .. import utils
+from ..utils.helper import info_exe
+from ..utils.netif import veth
 from link import veth_link
 from link import if_link
 
