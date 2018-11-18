@@ -418,17 +418,23 @@ def test_connect():
 def test_topo(topo, dist_db=os.path.join(os.path.dirname(os.path.abspath(__file__)), "trace/dist_db"), start=True, nolog=False):
 	# simple logging
 	#FORMAT = "[%(levelname)s - %(filename)s:%(lineno)s - %(funcName)s() ] %(message)s"
-	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-	logger=logging.getLogger()
-	logger.disabled=nolog
+	#changed code
+	#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+	#logger=logging.getLogger()
+	#logger.disabled=nolog
+	logger = logging.getLogger("emuedge.bin.mxen.test_topo")
 	# init xennet with templates we would like to use
 	tlst=['tandroid', 'tcentos', 'centos-new']
+	logger.info("Logging inside mxen")
+	logger.info("Creating the topology")
 	xnet=xen_net("root", "789456123", tlst, dist_db=dist_db)
 	# creating test nodes
 	path_to_topo=os.path.join(os.path.dirname(os.path.abspath(__file__)), "topo",topo)
 	xnet.init_topo(path_to_topo)
+	logger.info("Finished Initializing the topology")
 	if start:
 		xnet.start_all()
+	logger.info("Started the topology")
 	return xnet
 
 def xnet_interactive():
