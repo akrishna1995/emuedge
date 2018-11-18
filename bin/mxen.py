@@ -5,8 +5,7 @@ import XenAPI
 from sets import Set
 import time
 
-#sys.path.insert(0, './bean/')
-#sys.path.insert(0, './utils/')
+module_logger = logging.getLogger("emuedge.bin.mxen")
 
 from bean.vm import vm
 from bean.dev import dev
@@ -260,6 +259,8 @@ class xen_net:
 	# if they are involved in the future
 	# TODO: rewrite this method to discriminate between switch and devices
 	def start_all(self):
+		logger = logging.getLogger("emuedge.bin.mxen.start_all")
+		logger.info("Starting the vms")
 		# start all devices
 		[self.node_list[devid].start(self.session) for devid in self.dev_set]
 		# start all routers

@@ -1,6 +1,6 @@
-#This is the main entry point for emuegde
 #! /usr/bin/python
 
+#This is the main entry point for emuegde
 import os
 import sys
 import bin.mxen as xen
