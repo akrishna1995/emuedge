@@ -11,7 +11,7 @@ from bean.vm import vm
 from bean.dev import dev
 from utils.topo import topo
 import utils.helper as helper
-from utils.helper import autolog as log
+#from utils.helper import autolog as log
 from bean.xswitch import xrouter
 from bean.node import node_type as ntype
 #from link import switch2node
@@ -78,7 +78,7 @@ class xen_net:
 		name_list="dists loaded:"
 		for dist in self.dist_db:
 			name_list+=dist+"\t"
-		log(name_list)
+		#log(name_list)
 
 	@staticmethod
 	def init_session(uname, pwd, local=True):
@@ -87,7 +87,7 @@ class xen_net:
 			session=XenAPI.xapi_local()
 			session.xenapi.login_with_password(uname, pwd)
 		else:
-			log('currently not support remote connection')
+			print
 		return session
 
 	# for remote connection
@@ -102,7 +102,7 @@ class xen_net:
 		if local:
 			return 'localhost'
 		else:
-			log('currently not support remote connection')
+			#log('currently not support remote connection')
 			return None
 		#    session=pxssh.pxssh()
 		#    if not session.login(host, uname, pwd):
@@ -123,7 +123,7 @@ class xen_net:
 				msg="too less templates (" + str(count) + ") found for " + tname
 			else:
 				msg="too many templates (" + str(count) + ") found for " + tname
-			log(msg)
+			#log(msg)
 
 	# ATTENTION: when no empty slot is found, open a new slot for the new id, which need
 	# to be used immediately
@@ -147,7 +147,8 @@ class xen_net:
 		elif node.dtype==ntype.DEV:
 			self.dev_set.remove(did)
 		else:
-			log("unsupported node type " + str(node.dtype))
+			#log("unsupported node type " + str(node.dtype))
+			return None
 
 		node.uninstall()
 		self.emp_ids.append(did)
@@ -218,7 +219,7 @@ class xen_net:
 		for rid in self.router_set:
 			r=self.node_list[rid]
 			r.uninstall()
-		log("cleared all virtual if, qdisc rules and netns")
+		#log("cleared all virtual if, qdisc rules and netns")
 
 		for dev_id in self.dev_set:
 			dev=self.node_list[dev_id]
@@ -229,7 +230,7 @@ class xen_net:
 		for sid in self.switch_set:
 			switch=self.node_list[sid]
 			switch.uninstall(self.session)
-		log("cleared all devices and switches")
+		#log("cleared all devices and switches")
 
 		self.node_list=[]
 		self.emp_ids=[0]
@@ -241,10 +242,10 @@ class xen_net:
 
 		#self.dummy.uninstall(self.session)
 		ifb.clear()
-		log("cleared all metadata, ifb")
+		#log("cleared all metadata, ifb")
 
 		stop_time=time.time()
-		log("total time (s) consumed for topology clear: " + str(stop_time-start_time))
+		#log("total time (s) consumed for topology clear: " + str(stop_time-start_time))
 
 	def start_node(self, did):
 		node=self.node_list[did]
@@ -270,7 +271,7 @@ class xen_net:
 		# waiting for link control to apply after all machine network functions are ready
 		count=len(self.dev_set)
 		tap_check=[False]*count
-		log("looping to wait for network-ready on all vms before setting up traffic rules")
+		#log("looping to wait for network-ready on all vms before setting up traffic rules")
 		while count!=0:
 			i=0
 			for devid in self.dev_set:
@@ -280,7 +281,7 @@ class xen_net:
 						tap_check[i]=True
 						count-=1
 				i+=1
-		log("start applying traffic shaping rules...")
+		#log("start applying traffic shaping rules...")
 		# enable link control
 		[link.shape_traffic(dist_db=self.dist_db) for link in self.controlled_link_set]
 
@@ -321,7 +322,8 @@ class xen_net:
 				self.create_new_prouter(node['name'], node['ifs'], 
 					node['nat'], node['dhcp'], node['neighbors'], did=node['id'])
 			else:
-				log("node type " + node['type'] + " currently not supported!")
+				#log("node type " + node['type'] + " currently not supported!")
+				return None
 
 		for n1_json in nodes:
 			src_nid=n1_json['id']
@@ -353,7 +355,7 @@ class xen_net:
 		ifb.init(self.ifb_count)
 
 		stop_time=time.time()
-		log("total time (s) consumed for topology init: " + str(stop_time-start_time))
+		#log("total time (s) consumed for topology init: " + str(stop_time-start_time))
 
 	def connect(self, node1, node2):
 		# TODO: combine router type with switch type
@@ -373,14 +375,16 @@ class xen_net:
 			if node2.dtype==ntype.SWITCH or node2.dtype==ntype.ROUTER:
 				return node2.connect(node1, session=self.session)
 			else:
-				log("type connection between (" + str(node1.dtype) 
-					+ str(node2.dtype) + ") not supported yet!")
+				return None
+				#log("type connection between (" + str(node1.dtype) 
+				#	+ str(node2.dtype) + ") not supported yet!")
 		else:
-			log("type connection between (" + str(node1.dtype) 
-					+ str(node2.dtype) + ") not supported yet!")
+			return None
+			#log("type connection between (" + str(node1.dtype) 
+				#	+ str(node2.dtype) + ") not supported yet!")
 
 	def __del__(self):
-		log("in the destructor of xnet")
+		#log("in the destructor of xnet")
 		self.clear()
 		pass
 
@@ -391,7 +395,7 @@ class link_prop:
 def test_naive():
 	# simple logging
 	#FORMAT = "[%(levelname)s - %(filename)s:%(lineno)s - %(funcName)s() ] %(message)s"
-	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+	#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 	# init xennet with templates we would like to use
 	tlst=['tandroid','tcentos']
 	xnet=xen_net("root", "789456123", tlst)
@@ -403,7 +407,7 @@ def test_naive():
 def test_connect():
 	# simple logging
 	#FORMAT = "[%(levelname)s - %(filename)s:%(lineno)s - %(funcName)s() ] %(message)s"
-	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+	#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 	# init xennet with templates we would like to use
 	tlst=['android-basic', 'android-terminal']
 	xnet=xen_net("root", "789456123", tlst)
@@ -444,9 +448,9 @@ def xnet_interactive():
 	return xnet
 
 def test_dist(dist_db='trace/dist_db', nolog=False):
-	logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-	logger=logging.getLogger()
-	logger.disabled=nolog
+	#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+	#logger=logging.getLogger()
+	#logger.disabled=nolog
 	# init xennet with templates we would like to use
 	tlst=['tandroid', 'tcentos', 'centos-new']
 	xnet=xen_net("root", "789456123", tlst, dist_db=dist_db)

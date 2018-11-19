@@ -5,7 +5,7 @@ import sys, logging
 
 from ..utils.helper import info_exe
 from ..utils.helper import run_in_netns
-from ..utils.helper import autolog as log
+#from ..utils.helper import autolog as log
 from ..utils.ipaddr import ipv4
 import copy
 
@@ -180,7 +180,8 @@ class ifb(linux_netif):
 			ifb.ifb_count+=1
 			return ifb("ifb"+str(num))
 		else:
-			log("creating ifb failed! ifb_total exceeded or ifb hasn't inited", logging.CRITICAL)
+			return
+			#log("creating ifb failed! ifb_total exceeded or ifb hasn't inited", logging.CRITICAL)
 
 	# be CAREFUL: this command clears all previous existing ifb
 	@staticmethod
@@ -325,7 +326,7 @@ class netns():
 			cmd="""iptables -t nat -A POSTROUTING -s %s 
 				-o %s -j SNAT --to %s"""%(lan_ip_prefix, wan_if_name, wan_if_ip)
 			cmd_lst.append(cmd)
-		log("final cmd lst for normal nat:"+str(cmd_lst))
+		#log("final cmd lst for normal nat:"+str(cmd_lst))
 		run_in_netns(cmd_lst, self.name)
 
 	def get_if_by_id(self, ifid):

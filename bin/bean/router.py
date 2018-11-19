@@ -5,7 +5,7 @@ from abc import ABCMeta, abstractmethod
 
 from node import node
 from node import node_type
-from ..utils.helper import autolog as log
+#from ..utils.helper import autolog as log
 from ..utils.helper import info_exe
 from netif import router_if as rif
 from netif import netns
@@ -29,7 +29,8 @@ class prouter(node, netns):
 				self.init_neighbors(neighbors)
 		else:
 			if nat_params['is_open'] or dhcp_params['is_open'] or neighbors!=None:
-				log("must have ifs to open NAT/DHCP", logging.CRITICAL)
+				#log("must have ifs to open NAT/DHCP", logging.CRITICAL)
+				return
 
 	def init_ifs_json(self, ifs_json):
 		# init interfaces on the router

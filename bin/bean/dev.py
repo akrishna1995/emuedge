@@ -1,4 +1,4 @@
-import sys, logging
+import sys
 from node import node
 from node import node_type
 from abc import abstractmethod

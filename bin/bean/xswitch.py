@@ -2,12 +2,10 @@
 import XenAPI, logging, sys, subprocess
 from sets import Set
 
-#sys.path.insert(0, '../utils')
-#sys.path.insert(0, './')
 
 from node import node
 from node import node_type
-from ..utils.helper import autolog as log
+#from ..utils.helper import autolog as log
 from .. import utils
 from ..utils.helper import info_exe
 from netif import veth
@@ -27,7 +25,7 @@ class xswitch(node):
 			self.br=session.xenapi.network.get_by_uuid(uuid)
 			# ignore the passed name, get name from xenserver instead
 			br_name=session.xenapi.network.get_bridge(self.br)
-			log("default XSwitch "+name+" in Linux: "+br_name)
+			#log("default XSwitch "+name+" in Linux: "+br_name)
 			node.__init__(self, did, br_name, node_type.SWITCH)
 		else:
 			br_args={'assigned_ips': {}, 
@@ -38,7 +36,7 @@ class xswitch(node):
 					'blobs': {}}
 			self.br=session.xenapi.network.create(br_args)
 			br_name=session.xenapi.network.get_bridge(self.br)
-			log("XSwitch "+name+" in Linux: "+br_name)
+			#log("XSwitch "+name+" in Linux: "+br_name)
 			node.__init__(self, did, br_name, node_type.SWITCH)
 
 		self.default=default
@@ -62,8 +60,8 @@ class xswitch(node):
 			reverse=link.create_reverse_link()
 			node.neighbors[self]=reverse.link_if
 		else:
-			log("type connection between (" + str(self.dtype) 
-				+ str(node.dtype) + ") not supported yet!")
+			#log("type connection between (" + str(self.dtype)+ str(node.dtype) + ") not supported yet!")
+			return
 		return link, reverse
 
 	def connect2switch(self, switch):
@@ -89,7 +87,8 @@ class xswitch(node):
 			cmd="ovs-vsctl del-br "+self.name
 			info_exe(cmd)
 		else:
-			log("default XenSwitch "+self.name+" not being deleted!")
+			return
+			#log("default XenSwitch "+self.name+" not being deleted!")
 
 	def start(self, session=None):
 		# xen switch automatically starts when any device 
@@ -131,9 +130,9 @@ class xrouter(xswitch):
 			cmd=("ip netns del "+self.name+" && "
 				+"ovs-vsctl del-br "+self.name)
 			helper.info_exe(cmd)
-			log("deletion cmd:"+str(cmd))
+			#log("deletion cmd:"+str(cmd))
 		else:
-			log("router netns "+self.name+" is not started")
+			#log("router netns "+self.name+" is not started")
 			return
 		# test if br is set
 		#cmd="ovs-vsctl br-list | grep "+self.name

@@ -2,7 +2,7 @@ import logging
 import subprocess
 import XenAPI
 
-from helper import autolog as log
+#from helper import autolog as log
 
 class xen_helper:
 
@@ -45,7 +45,8 @@ class xen_helper:
 	def del_vm_by_name(session, name):
 		vids=xen_helper.get_vid_by_name(session, name)
 		if len(vids)==0:
-			log("no vm named '" + name + "' exists!")
+			#log("no vm named '" + name + "' exists!")
+			return
 		else:
 			for vid in vids:
 				xen_helper.del_vm_by_id(vid)

@@ -6,7 +6,7 @@ import XenAPI, logging, sys, time
 
 from dev import dev
 from node import node_type
-from ..utils.helper import autolog as log
+#from ..utils.helper import autolog as log
 from ..utils.helper import mb2byte
 from netif import xen_vif as xvif
 from ..utils.helper import info_exe
@@ -51,7 +51,7 @@ class vm(dev):
 		for i in range(0, len(self.if_lst)):
 			if self.if_lst[i]==None:
 				return i
-		log("all vif slots are occupied!", level=logging.CRITICAL)
+		#log("all vif slots are occupied!", level=logging.CRITICAL)
 		return None
 
 	# create vif
@@ -80,27 +80,27 @@ class vm(dev):
 		platform_info=session.xenapi.VM.get_platform(self.vref)
 		cores_per_sock=int(platform_info['cores-per-socket'])
 		if max_vcpu%cores_per_sock!=0:
-			log("max vcpu to set is not a multiple of cores-per-socket! abandon!")
+			#log("max vcpu to set is not a multiple of cores-per-socket! abandon!")
 			return
-		log('the power state: ' + self.get_power_state(session), logging.INFO)
+		#log('the power state: ' + self.get_power_state(session), logging.INFO)
 		if (self.get_power_state(session)=='Halted'):
 			session.xenapi.VM.set_VCPUs_max(self.vref, max_vcpu)
 		else:
 			msg="make sure VM in halted state"
-			log(msg)
+			#log(msg)
 
 	def set_VCPUs_at_startup(self, session, up_vcpu):
 		platform_info=session.xenapi.VM.get_platform(self.vref)
 		cores_per_sock=int(platform_info['cores-per-socket'])
 		if up_vcpu%cores_per_sock!=0:
-			log("startup vcpu to set is not a multiple of cores-per-socket! abandon!")
+			#log("startup vcpu to set is not a multiple of cores-per-socket! abandon!")
 			return
-		log('the power state: ' + self.get_power_state(session), logging.INFO)
+		#log('the power state: ' + self.get_power_state(session), logging.INFO)
 		if (self.get_power_state(session)=='Halted'):
 			session.xenapi.VM.set_VCPUs_at_startup(self.vref, up_vcpu)
 		else:
 			msg="make sure VM in halted state"
-			log(msg)
+			#log(msg)
 
 	def check_tap(self):
 		no_tap_count=0
@@ -172,9 +172,9 @@ class vm(dev):
 
 	def set_fixed_mem(self, session, mem):
 		mem=mb2byte(mem)
-		log("before setting fixed min")
+		#log("before setting fixed min")
 		self.set_fixed_min_mem(session, mem)
-		log("before setting fixed max")
+		#log("before setting fixed max")
 		self.set_fixed_max_mem(session, mem)
 
 	def set_static_min_mem(self, session, mem):
@@ -256,7 +256,7 @@ class vm(dev):
 			session.xenapi.VM.destroy(self.vref)
 		else:
 			msg="make sure VM in halted state"
-			log(msg)
+			#log(msg)
 
 	def set_memory(self, session, mem):
 		mem=mb2byte(mem)
@@ -269,16 +269,16 @@ class vm(dev):
 	# TODO: fix the bug in destroy certain VDI
 	# how to pass the memory which exceeds the XML-RPC limits
 	def uninstall(self, session):
-		log("uninstalling " + self.name)
+		#log("uninstalling " + self.name)
 		if (self.get_power_state(session)=='Halted'):
 			start_time=time.time()
 			self.destroy_all_vbd_vdi(session)
 			self.destroy(session)
 			end_time=time.time()
-			log(self.name+" uninstallation took "+str(end_time-start_time)+"ms")
+			#log(self.name+" uninstallation took "+str(end_time-start_time)+"ms")
 		else:
 			msg="make sure VM in halted state"
-			log(msg)
+			#log(msg)
 
 	def destroy_all_vbd_vdi(self, session):
 		vbd_list=session.xenapi.VM.get_VBDs(self.vref)
@@ -299,4 +299,4 @@ class vm(dev):
 				break
 			else:
 				msg+=("\n"+netif.name)
-		log(msg)
+		#log(msg)

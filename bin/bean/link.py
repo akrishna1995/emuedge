@@ -5,7 +5,7 @@ import sys
 #sys.path.insert(0, './')
 
 import logging
-from ..utils.helper import autolog as log
+#from ..utils.helper import autolog as log
 from node import node_type as ntype
 from netif import ifb
 from ..utils.helper import info_exe
@@ -92,7 +92,8 @@ class if_link(link):
 		elif self.params!=None:
 			params=self.params
 		else:
-			log("no traffic params is set!")
+			return None
+			#log("no traffic params is set!")
 		#log("shaping traffic for:"+str(self.link.name))
 		cmds=traffic_cmd_compile(params, dist_db=dist_db)
 		# determine linux system if name to apply control to
@@ -126,7 +127,8 @@ class veth_link(link):
 		elif self.params!=None:
 			params=self.params
 		else:
-			log("no traffic params is set!")
+			#log("no traffic params is set!")
+			return
 		cmds=traffic_cmd_compile(params, dist_db=dist_db)
 		# determine linux system if name to apply control to
 		if_name=self.link_if.peer[0].name
@@ -139,7 +141,8 @@ class veth_link(link):
 
 def traffic_cmd_compile(params, dist_db=None):
 	if len(params)==0:
-		log("no traffic shaping param is specified!", logging.CRITICAL)
+		return
+		#log("no traffic shaping param is specified!", logging.CRITICAL)
 	cmds=[]
 	for key in params:
 		if key=="netem":
@@ -147,7 +150,8 @@ def traffic_cmd_compile(params, dist_db=None):
 		elif key=="rate":
 			cmds.append(tbfrate_json2cmd(params[key]))
 		else:
-			log("unsupported traffic control type: "+key)
+			return
+			#log("unsupported traffic control type: "+key)
 	# combine cmds with prefixes
 	tc_prefix="tc qdisc add dev {} "
 	cmds[0]=tc_prefix+" root handle 1: "+cmds[0]
@@ -206,7 +210,8 @@ class switch2node(link):
 		elif node_type==ntype.DEV:
 			if_name=self.link_if.name
 		else:
-			log("unsupported node type: "+str(node_type))
+			#log("unsupported node type: "+str(node_type))
+			return
 
 		for i in range(0, len(cmds)):
 			cmds[i]=(cmds[i].format(if_name))

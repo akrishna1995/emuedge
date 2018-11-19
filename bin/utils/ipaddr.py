@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from helper import autolog as log
+#from helper import autolog as log
 import logging
 
 class ip:
@@ -16,10 +16,10 @@ class ipv4(ip):
 		mask_bit=int(ipstr.split('/')[1])
 
 		if mask_bit >= 32:
-			log("get more than 32 bit mask " + str(mask_bit), logging.CRITICAL)
+			#log("get more than 32 bit mask " + str(mask_bit), logging.CRITICAL)
 			return
 		elif len(addr_arr)!=4:
-			log("invalid ip addr pairs, expect 4 but got " + str(len(addr_arr)), logging.CRITICAL)
+			#log("invalid ip addr pairs, expect 4 but got " + str(len(addr_arr)), logging.CRITICAL)
 			return
 
 		mask=['1']*int(mask_bit)
@@ -44,10 +44,10 @@ class ipv4(ip):
 	def mask_from_suffix(suffix):
 		mask_bit=int(suffix)
 		if mask_bit>32:
-			log("get more than 32 bit mask " + str(mask_bit), logging.CRITICAL)
+			#log("get more than 32 bit mask " + str(mask_bit), logging.CRITICAL)
 			return None
 		elif mask_bit<0:
-			log("get less than 0 bit mask " + str(mask_bit), logging.CRITICAL)
+			#log("get less than 0 bit mask " + str(mask_bit), logging.CRITICAL)
 			return None
 		mask=['1']*int(mask_bit)
 		mask+=['0']*int(32-mask_bit)
